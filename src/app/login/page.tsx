@@ -2,7 +2,11 @@
 import { ApiCall } from "@/utils/Api/apiCall";
 import { ApiUrl } from "@/utils/Api/apiUrl";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+// import { ReloadIcon } from "@radix-ui/react-icons"
+
+// import { Button } from "@/components/ui/button";
 
 export default function Login() {
 	const [user, setUser] = useState<object>({
@@ -11,6 +15,7 @@ export default function Login() {
 	});
 	const [error, setError] = useState<any>(null);
 
+	const router = useRouter();
 	const [visible, setVisible] = useState<boolean>(false);
 
 	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +27,10 @@ export default function Login() {
 
 		try {
 			const response = await apiCall.postRequest(apiUrl.login, user);
-			console.log(response);
+			console.log(response.data);
+			if (response.status === 200) {
+				router.push("/");
+			}
 		} catch (error: any) {
 			setError(error?.response?.data.error);
 			console.error(error?.response);
@@ -81,12 +89,14 @@ export default function Login() {
 						)}
 					</div>
 				</div>
-				<button
-					className="bg-blue-700 px-[110px] text-white font-normal p-2 rounded-lg"
-					type="submit"
-				>
-					Login
-				</button>
+				{
+					<button
+						className="bg-blue-700 px-[110px] text-white font-normal p-2 rounded-lg"
+						type="submit"
+					>
+						Login
+					</button>
+				}
 			</form>
 			<div>
 				<p>

@@ -18,8 +18,8 @@ export class ApiCall {
 				...this.defaultHeaders,
 				headers,
 			});
-			console.log(response?.data);
-			return response?.data;
+			console.log(response);
+			return response;
 		} catch (error: any) {
 			console.error(error?.response);
 			throw error;
@@ -32,8 +32,8 @@ export class ApiCall {
 				...this.defaultHeaders,
 				headers,
 			});
-			console.log(response?.data);
-			return response?.data;
+			console.log(response);
+			return response;
 		} catch (error: any) {
 			console.error(error?.response);
 			throw error;
@@ -50,8 +50,8 @@ export class ApiCall {
 				...this.defaultHeaders,
 				headers,
 			});
-			console.log(response?.data);
-			return response?.data;
+			console.log(response);
+			return response;
 		} catch (error: any) {
 			console.error(error?.response);
 			throw error;
@@ -64,8 +64,8 @@ export class ApiCall {
 				...this.defaultHeaders,
 				headers,
 			});
-			console.log(response?.data);
-			return response?.data;
+			console.log(response);
+			return response;
 		} catch (error: any) {
 			console.error(error?.response);
 			throw error;
