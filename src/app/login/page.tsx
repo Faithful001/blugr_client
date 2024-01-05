@@ -4,9 +4,11 @@ import { ApiUrl } from "@/utils/Api/apiUrl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-// import { ReloadIcon } from "@radix-ui/react-icons"
+import { useMutation, useQueryClient } from "react-query";
 
-// import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@radix-ui/react-icons";
+
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
 	const [user, setUser] = useState<object>({
@@ -15,12 +17,12 @@ export default function Login() {
 	});
 	const [error, setError] = useState<any>(null);
 
+	const queryClient = useQueryClient();
+
 	const router = useRouter();
 	const [visible, setVisible] = useState<boolean>(false);
 
-	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
+	const login = async () => {
 		///api classes instantiations
 		const apiCall = new ApiCall();
 		const apiUrl = new ApiUrl();
@@ -35,6 +37,20 @@ export default function Login() {
 			setError(error?.response?.data.error);
 			console.error(error?.response);
 		}
+	};
+
+	const { mutate, isLoading } = useMutation(login, {
+		onSuccess: () => {
+			queryClient.invalidateQueries("login");
+		},
+		onError: (error) => {
+			console.error(error);
+		},
+	});
+
+	const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		mutate();
 	};
 	return (
 		<div className="flex flex-col items-center justify-center gap-3 pt-10">
@@ -89,14 +105,19 @@ export default function Login() {
 						)}
 					</div>
 				</div>
-				{
+				{isLoading ? (
+					<Button disabled>
+						<ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
+						Login
+					</Button>
+				) : (
 					<button
 						className="bg-blue-700 px-[110px] text-white font-normal p-2 rounded-lg"
 						type="submit"
 					>
 						Login
 					</button>
-				}
+				)}
 			</form>
 			<div>
 				<p>
